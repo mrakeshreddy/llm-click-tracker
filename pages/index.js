@@ -1,33 +1,51 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { auth, provider } from '../firebase';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 
 export default function Home() {
-  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h1>LLM Click Tracker Home</h1>
 
-      {!session ? (
-        <div>
-          <p>You are not signed in.</p>
-          <button onClick={() => signIn('google')} style={{ padding: '10px 20px' }}>
-            Login with Google
-          </button>
-        </div>
+      {!user ? (
+        <button onClick={handleLogin} style={{ marginTop: '20px' }}>
+          Login with Google
+        </button>
       ) : (
-        <div>
-          <p>Welcome, {session.user.name}</p>
-          <p>Email: {session.user.email}</p>
-          <button onClick={() => signOut()} style={{ padding: '10px 20px', marginTop: '1rem' }}>
-            Sign out
+        <>
+          <p>Welcome, {user.displayName}</p>
+          <button onClick={handleLogout} style={{ marginRight: '10px' }}>
+            Logout
           </button>
-
-          <div style={{ marginTop: '2rem' }}>
-            <button style={{ padding: '12px 24px', background: '#4285F4', color: '#fff', border: 'none' }}>
-              Connect with Google Search Console
-            </button>
-          </div>
-        </div>
+          <button style={{ marginTop: '10px' }}>
+            Connect with Google Search Console
+          </button>
+        </>
       )}
     </div>
   );
