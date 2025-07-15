@@ -1,43 +1,30 @@
-import { useEffect, useState } from 'react';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth, provider } from '../firebase';
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleLogout = () => {
-    signOut(auth);
-  };
+  const { data: session } = useSession();
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>LLM Click Tracker Home</h1>
 
-      {!user ? (
-        <button onClick={handleLogin}>Login with Google</button>
+      {!session ? (
+        <>
+          <p>Please log in to continue.</p>
+          <button onClick={() => signIn("google")}>
+            Login with Google
+          </button>
+        </>
       ) : (
-        <div>
-          <p>Welcome, {user.displayName}</p>
-          <button onClick={handleLogout}>Logout</button>
-          <br />
-          <br />
-          <button>Connect with Google Search Console</button>
-        </div>
+        <>
+          <p>Welcome, {session.user.name}</p>
+          <button onClick={() => signOut()}>
+            Logout
+          </button>
+          <br /><br />
+          <button onClick={() => alert("GSC connect coming soon")}>
+            Connect with Google Search Console
+          </button>
+        </>
       )}
     </div>
   );
