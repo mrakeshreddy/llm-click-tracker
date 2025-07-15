@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { OAUTH_CONFIG } from '../../../utils/oauthConfig';
+import { OAUTH_CONFIG } from '../../utils/oauthConfig';
 
 export default async function handler(req, res) {
   const code = req.query.code;
