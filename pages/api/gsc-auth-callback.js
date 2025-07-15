@@ -11,9 +11,9 @@ export default async function handler(req, res) {
   try {
     const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
       code,
-      client_id: OAUTH_CONFIG.client_id,
-      client_secret: OAUTH_CONFIG.client_secret,
-      redirect_uri: OAUTH_CONFIG.redirect_uri,
+      client_id: 764668315789-efimoblb025il5bab5kfud2s8lua9k0d.apps.googleusercontent.com,
+      client_secret: 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,
+      redirect_uri: http://localhost:3000/api/auth/callback,
       grant_type: 'authorization_code'
     });
 
