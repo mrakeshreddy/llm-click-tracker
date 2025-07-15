@@ -55,49 +55,50 @@ export default function Home() {
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
+    <div style={{ padding: '2rem', fontFamily: 'Arial', maxWidth: '600px', margin: '0 auto' }}>
       <h1>LLM Click Tracker</h1>
 
-      {!user ? (
-        <button onClick={handleLogin}>Login with Google</button>
-      ) : (
+      {user ? (
         <>
           <p>Welcome, {user.displayName}</p>
-          <button onClick={handleLogout}>Logout</button>
-
-          <div style={{ marginTop: '2rem' }}>
-            <h2>Connect Google Search Console</h2>
-
-            <label>
-              Access Token:
-              <input
-                type="text"
-                value={accessToken}
-                onChange={(e) => setAccessToken(e.target.value)}
-                style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
-              />
-            </label>
-
-            <label>
-              Site URL:
-              <input
-                type="text"
-                value={siteUrl}
-                onChange={(e) => setSiteUrl(e.target.value)}
-                style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem' }}
-              />
-            </label>
-
-            <button onClick={handleFetchGSCData}>Fetch GSC Data</button>
-          </div>
-
-          {gscData && (
-            <div style={{ marginTop: '2rem', background: '#f6f6f6', padding: '1rem', borderRadius: '5px' }}>
-              <h3>GSC Data:</h3>
-              <pre>{JSON.stringify(gscData, null, 2)}</pre>
-            </div>
-          )}
+          <button onClick={handleLogout} style={{ marginBottom: '1rem' }}>Logout</button>
         </>
+      ) : (
+        <button onClick={handleLogin} style={{ marginBottom: '1rem' }}>Login with Google</button>
+      )}
+
+      <div style={{ marginTop: '1rem' }}>
+        <h2>Connect Google Search Console</h2>
+
+        <label>
+          Access Token:
+          <input
+            type="text"
+            value={accessToken}
+            onChange={(e) => setAccessToken(e.target.value)}
+            style={{ width: '100%', padding: '0.5rem', margin: '0.5rem 0' }}
+          />
+        </label>
+
+        <label>
+          Site URL:
+          <input
+            type="text"
+            value={siteUrl}
+            onChange={(e) => setSiteUrl(e.target.value)}
+            placeholder="e.g., https://yourdomain.com/"
+            style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem' }}
+          />
+        </label>
+
+        <button onClick={handleFetchGSCData}>Fetch GSC Data</button>
+      </div>
+
+      {gscData && (
+        <div style={{ marginTop: '2rem', background: '#f6f6f6', padding: '1rem', borderRadius: '5px' }}>
+          <h3>GSC Data:</h3>
+          <pre>{JSON.stringify(gscData, null, 2)}</pre>
+        </div>
       )}
     </div>
   );
