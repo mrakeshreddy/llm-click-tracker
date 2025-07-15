@@ -1,4 +1,4 @@
-import { OAUTH_CONFIG } from '../../../utils/oauthConfig';
+import { OAUTH_CONFIG } from '../../utils/oauthConfig';
 
 export default function handler(req, res) {
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
