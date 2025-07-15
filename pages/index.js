@@ -1,11 +1,15 @@
-export default function Home() {
-  return <div><h1>LLM Click Tracker Home</h1></div>;
-}
-
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
-import { firebaseConfig } from '../../firebase';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLW-g6eQaAHDZk3y8D96YjgtCeh0LPZBA",
+  authDomain: "llm-click-tracker.firebaseapp.com",
+  projectId: "llm-click-tracker",
+  storageBucket: "llm-click-tracker.appspot.com",
+  messagingSenderId: "981007181700",
+  appId: "1:981007181700:web:e0c933ad7ad1dbffbe94d1",
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -34,8 +38,8 @@ export default function Home() {
   };
 
   const handleGSCConnect = () => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+    const clientId = "981007181700-m0c7pkdh6eg5fob2p7ct36kfgsffh01i.apps.googleusercontent.com";
+    const redirectUri = "https://llm-click-tracker.vercel.app/api/auth/callback";
 
     const scope = encodeURIComponent('https://www.googleapis.com/auth/webmasters.readonly');
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}`;
@@ -46,6 +50,7 @@ export default function Home() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1>LLM Click Tracker Home</h1>
+
       {!user ? (
         <button onClick={handleLogin} style={{ padding: '0.6rem 1.2rem', marginTop: '1rem' }}>
           Login with Google
